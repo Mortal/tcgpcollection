@@ -1,0 +1,142 @@
+.item,
+.fossil,
+.pokemontool {
+  --type-color: rgb(98, 210, 238);
+}
+.supporter {
+  --type-color: rgb(232, 214, 192);
+}
+.Dragon {
+  --type-color: rgb(226, 178, 100);
+}
+.Metal {
+  --type-color: rgb(137, 137, 187);
+}
+.Darkness {
+  --type-color: rgb(129, 129, 142);
+}
+.Fighting {
+  --type-color: rgb(194, 138, 74);
+}
+.Psychic {
+  --type-color: rgb(181, 93, 206);
+}
+.Lightning {
+  --type-color: rgb(217, 220, 109);
+}
+.Water {
+  --type-color: rgb(107, 137, 235);
+}
+.Fire {
+  --type-color: rgb(243, 121, 121);
+}
+.Grass {
+  --type-color: rgb(94, 212, 94);
+}
+.Colorless {
+  --type-color: rgb(186, 186, 186);
+}
+
+.typeName {
+  font-style: italic;
+  background-color: var(--type-color);
+}
+
+.MyCards {
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1ch;
+    width: 400px;
+
+    .MyCard {
+      color: inherit;
+      text-decoration: inherit;
+      min-width: 0;
+      position: relative;
+      aspect-ratio: 0.6;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: 3px solid #444;
+      border-radius: 5px;
+      gap: 5px;
+      padding: 5px;
+
+      background-color: var(--type-color);
+      border-color: #000;
+
+      > div {
+        text-align: center;
+        word-break: break-word;
+      }
+    }
+  }
+}
+
+.Expansion {
+  display: flex;
+  flex-direction: column;
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1ch;
+    width: 600px;
+
+    .Card {
+      color: inherit;
+      text-decoration: inherit;
+      min-width: 0;
+      position: relative;
+      aspect-ratio: 0.6;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: 3px solid #444;
+      border-radius: 5px;
+      gap: 5px;
+      padding: 5px;
+
+      > div {
+        text-align: center;
+        word-break: break-word;
+      }
+
+      &.notOwned {
+        background: radial-gradient(white 0%, var(--type-color) 200%);
+        border-color: #bbbbbb;
+      }
+      &.owned {
+        background-color: var(--type-color);
+        border-color: #000;
+      }
+      &.hovered {
+        box-shadow: rgb(145, 0, 177) 0 0 10px;
+      }
+
+      .pack {
+        font-style: italic;
+        color: #0009;
+      }
+    }
+  }
+}
+
+.cardHover {
+  position: absolute;
+  z-index: 10;
+  left: 110%;
+  top: 0;
+  width: 200px;
+  border: 1px solid black;
+  background-color: white;
+  border-radius: 5px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 5px;
+}
