@@ -58,7 +58,7 @@ function App() {
           ),
           // Only keep packs with logo, in order to remove weird "1 rare card guaranteed" packs
           packs: [...packs.values()].filter(
-            (pack) => expansion.packs?.includes(pack.id) && pack.logo
+            (pack) => expansion.packs?.includes(pack.id) && !pack.name?.includes("or higher card guaranteed")
           ),
         })),
     [expansions, cards, packs, packCards]
@@ -211,7 +211,7 @@ const WhichPackToOpen = observer(function WhichPackToOpen({
     <>
       <h2>Which pack to open next?</h2>
       {[...packs.values()]
-        .filter((pack) => pack.logo)
+        .filter((pack) => !pack.name?.includes("or higher card guaranteed"))
         .map((pack) => ({
           pack,
           pct:
