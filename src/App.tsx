@@ -510,7 +510,9 @@ const Card = observer(function Card({
       <div>
         {card.setNum} {rarity}
       </div>
-      <div>{card.name!.split(" - ")[0]}</div>
+      <div>
+        <CardName cardName={card.name} />
+      </div>
       {packs.map((p) => (
         <div key={p.id} className={styles.pack}>
           ({p.name})
@@ -524,6 +526,54 @@ const Card = observer(function Card({
     </a>
   );
 });
+
+function CardName({ cardName }: { cardName: string | undefined }) {
+  if (cardName == null) return <>?</>;
+  const [head] = cardName.split(" - ");
+  if (!head.includes("[")) return <>{head}</>;
+  // [Text:AdditionalName v="ADDITIONAL_NAME_Alora" type="region" ][Text:Char v="FOUR-PER-EM-SPACE" ]Vulpix
+  const re = /\[.*?\]|[^[]+/g;
+  const children = [];
+  for (const mo of head.matchAll(re)) {
+    if (mo[0].startsWith("[")) {
+      children.push(<CardTag tagText={mo[0]} key={children.length} />);
+    } else {
+      children.push(
+        <React.Fragment key={children.length}>{mo[0]}</React.Fragment>
+      );
+    }
+  }
+  return <>{children}</>;
+}
+
+function CardTag({ tagText }: { tagText: string }) {
+  const mo2 = /\[([^ ]*)(.*)\]/.exec(tagText);
+  if (mo2 == null) {
+    return <span title={`parse failed ${tagText}`}>?</span>;
+  }
+  const tag = mo2[1];
+  const kv: Record<string, string> = {};
+  for (const mo of mo2[2].matchAll(/([a-z]+)="([^"]*)"/g)) {
+    kv[mo[1]] = mo[2];
+  }
+  if (tag === "Text:AdditionalName") {
+    if (kv.type === "region") {
+      if (kv.v === "ADDITIONAL_NAME_Alora") return <small>Alolan</small>;
+      if (kv.v === "ADDITIONAL_NAME_Paldea") return <small>Paldean</small>;
+    }
+    if (kv.type === "origin") {
+      if (kv.v === "ADDITIONAL_NAME_Origin") return <small>Origin-forme</small>;
+    }
+  }
+  if (tag === "Text:Char") {
+    if (kv.v === "FOUR-PER-EM-SPACE") return <>&nbsp;</>;
+  }
+  return (
+    <span title={`parse failed [${tag}] ${JSON.stringify(kv)} ${tagText}`}>
+      ?
+    </span>
+  );
+}
 
 function renderDesc(
   desc: string | null | undefined,
